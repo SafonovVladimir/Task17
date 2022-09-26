@@ -1,0 +1,27 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css' rel='stylesheet'
+          type='text/css'>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.rtl.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap-social.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <title>{% block title %}Weather Reminder{% endblock %}</title>
+</head>
+<body>
+
+{% include 'inc/_nav.html' %}
+
+{% block content %}
+
+{% endblock %}
+
+<script src="{% static 'bootstrap/js/bootstrap.bundle.js' %}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,1 @@
+web: gunicorn Task17.wsgi

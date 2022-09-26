@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ block.super }}
+{% endblock %}
+
+{% load static %}
+
+{% block content %}
+    {#    <nav class="row" style="background: green; color: white;">#}
+    {#        <h1 class="col-md-3 text-center">Weather</h1>#}
+    {#    </nav>#}
+    <br/>
+    <br/>
+    <div class="row">
+        <form method="post" class="col-md-6 col-md-offset-3">
+            {% csrf_token %}
+            <div class="input-group">
+                <label>
+                    <input type="text" class="form-control" name="city" placeholder="Search"><br>
+                </label>&nbsp;&nbsp;
+                <div class="input-group-btn">
+                    <button class="btn btn-primary" type="submit">
+                        <i class="glyphicon glyphicon-search"></i>
+                        View Forecast
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <h3>country code : {{ country_code }}</h3>
+            <h5>coordinate : </h5>
+            <h6>longitude: {{ longitude }}</h6>
+            <h6>latidude: {{ latidude }}</h6>
+            <h5>timezone: GMT {{ timezone }}</h5>
+            <h5>temp : {{ temp }}</h5>
+            <h5>pressure : {{ pressure }} </h5>
+            <h5>humidity : {{ humidity }}%</h5>
+            <h5>code : {{ code }}</h5>
+            {{ list_of_data }}
+        </div>
+    </div>
+{% endblock %}
+
