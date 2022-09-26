@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-iz&v!3*82x*hrb66e-g+vj@k=!^pyepr=(xxhl))v-@5o-3ra1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'djangogram01.herokuapp.com']
 
 # Application definition
 
@@ -93,6 +93,9 @@ DATABASES = {
 #     }
 # }
 
+db_from_env = dj_database_url.config()
+DATABASES['default'].update(db_from_env)
+
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
@@ -130,6 +133,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'Task17/static')
 ]
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
