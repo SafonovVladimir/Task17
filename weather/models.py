@@ -17,7 +17,6 @@ class Subscriptions(models.Model):
 
     def __str__(self):
         return str(self.pk)
-        # return self.user.username
 
     class Meta:
         verbose_name = "Subscription"
@@ -26,7 +25,8 @@ class Subscriptions(models.Model):
 
 
 class City(models.Model):
-    subscription = models.ForeignKey(Subscriptions, verbose_name="Subscription", on_delete=models.CASCADE)
+    subscriptions = models.ManyToManyField(Subscriptions, blank=True, related_name='subscriptions')
+    # subscription = models.ForeignKey(Subscriptions, verbose_name="Subscription", on_delete=models.CASCADE)
     city_name = models.CharField("City name", blank=True, max_length=150)
     timezone = models.CharField("Timezone", blank=True, max_length=10)
     longitude = models.CharField("Longitude", blank=True, max_length=12)

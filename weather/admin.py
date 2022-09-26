@@ -14,11 +14,11 @@ class SubscriptionsAdmin(admin.ModelAdmin):
 
 
 class CityAdmin(admin.ModelAdmin):
-    list_display = ('id', 'subscription', 'city_name', 'timezone', 'longitude', 'latitude')
-    list_display_links = ('id', 'subscription', 'city_name')
+    list_display = ('id', 'city_name', 'timezone', 'longitude', 'latitude')
+    list_display_links = ('id', 'city_name')
+    filter_horizontal = ['subscriptions']
     search_fields = ('city_name',)
     save_on_top = True
-    # fields = ('subscription', 'city_name')
 
 
 class ForecastAdmin(admin.ModelAdmin):
