@@ -4,6 +4,14 @@ from .views import *
 
 urlpatterns = [
     path('', index, name='home'),
+    # path('', get_user_subscriptions, name='home'),
+    path('user/<slug:username>', get_user_subscriptions, name='user_subscriptions'),
+    path('login/', user_login, name='login'),
+    path('logout/', user_logout, name='logout'),
+    path('register/', register, name='register'),
+    path('check_username/', check_username, name='check_username'),
+    path('validate_username/', validate_username, name='validate_username'),
+
     path('api/v1/subscriptions/', SubscriptionsAPIList.as_view()),
     path('api/v1/subscriptions/<int:pk>/', SubscriptionsAPIUpdate.as_view()),
     path('api/v1/subscriptionsdelete/<int:pk>/', SubscriptionsAPIDestroy.as_view()),

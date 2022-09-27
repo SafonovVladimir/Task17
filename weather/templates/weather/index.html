@@ -30,17 +30,22 @@
     </div>
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <h3>country code : {{ country_code }}</h3>
-            <h5>coordinate : </h5>
-            <h6>longitude: {{ longitude }}</h6>
-            <h6>latidude: {{ latidude }}</h6>
-            <h5>timezone: GMT {{ timezone }}</h5>
             <h5>temp : {{ temp }}</h5>
             <h5>pressure : {{ pressure }} </h5>
             <h5>humidity : {{ humidity }}%</h5>
-            <h5>code : {{ code }}</h5>
-            {{ list_of_data }}
         </div>
+    </div>
+    <div>
+    <br>
+    <h1 align="center">Subscriptions</h1>
+        {% for sub in subscriptions %}
+            {% for i in sub.subscriptions.all %}
+                <b>City:</b> {{ i }}
+                <b>Interval:</b> {{ sub.interval }}
+                <b>Created at:</b> {{ sub.created_at }}
+                <br>
+            {% endfor %}
+        {% endfor %}
     </div>
 {% endblock %}
 

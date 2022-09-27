@@ -1,19 +1,35 @@
 import urllib.request
-from django.shortcuts import render
+
+from django.contrib import messages
+from django.contrib.auth import login, logout
+from django.contrib.auth.models import User
+from django.http import JsonResponse
+from django.shortcuts import render, redirect
 import json
 
 from rest_framework import generics
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 
-from weather.models import City, Subscriptions, Forecast
-from weather.permissions import IsAdminOrReadOnly
-from weather.serializers import SubscriptionsSerializer, CitySerializer, ForecastSerializer
+from .models import City, Subscriptions, Forecast
+from .permissions import IsAdminOrReadOnly
+from .serializers import SubscriptionsSerializer, CitySerializer, ForecastSerializer
+from .forms import UserLoginForm, UserRegisterForm
 
 API_KEY = '601e4e6a7e92e77aa8f999a053b5510f'
 
 
 def index(request):
+    if request.user.is_authenticated:
+        return redirect('user_subscriptions', request.user.username)
+    else:
+        return redirect('login')
+
+
+def get_user_subscriptions(request, username):
+    user_id = User.objects.get(username=username).id
+    subscriptions = Subscriptions.objects.filter(user=user_id).order_by('created_at')
+
     if request.method == 'POST':
         city = request.POST['city']
 
@@ -24,21 +40,82 @@ def index(request):
 
         # data for variable list_of_data
         context = {
-            "country_code": str(list_of_data['sys']['country']),
-            "longitude": str(list_of_data['coord']['lon']),
-            "latidude": str(list_of_data['coord']['lat']),
-            "timezone": str(list_of_data['timezone'] // 3600),
+            # "country_code": str(list_of_data['sys']['country']),
+            # "longitude": str(list_of_data['coord']['lon']),
+            # "latidude": str(list_of_data['coord']['lat']),
+            # "timezone": str(list_of_data['timezone'] // 3600),
             "temp": str(list_of_data['main']['temp']) + 'C',
             "pressure": str(list_of_data['main']['pressure']),
             "humidity": str(list_of_data['main']['humidity']),
-            "code": str(list_of_data['cod']),
-            "list_of_data": list_of_data,
+            # "code": str(list_of_data['cod']),
+            # "list_of_data": list_of_data,
+            "subscriptions": subscriptions,
+            # "user_id": user_id,
+            # "cities": cities,
         }
-        # print(context)
     else:
-        context = {}
+        context = {
+            "subscriptions": subscriptions,
+        }
 
     return render(request, "weather/index.html", context=context)
+
+
+def user_login(request):
+    if request.method == 'POST':
+        form = UserLoginForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('user_subscriptions', user)
+            # return redirect('home')
+    else:
+        form = UserLoginForm()
+    return render(request, 'weather/login.html', {'form': form})
+
+
+def user_logout(request):
+    logout(request)
+    return redirect('login')
+
+
+def register(request):
+    if request.method == 'POST':
+        form = UserRegisterForm(request.POST)
+        context = {
+            'form': form,
+        }
+        if form.is_valid():
+            user = form.save()
+            # Profile.objects.create(user=form.instance)
+            login(request, user)
+            return redirect('home')
+        else:
+            messages.error(request, 'Error')
+    else:
+        form = UserRegisterForm()
+        context = {
+            'form': form,
+        }
+    return render(request, 'weather/register.html', context=context)
+
+
+def validate_username(request):
+    """Check available name"""
+    username = request.GET.get('username', None)
+    response = {
+        'is_taken': User.objects.filter(username__iexact=username).exists()
+    }
+    return JsonResponse(response)
+
+
+def check_username(request):
+    """Check username"""
+    username = request.GET.get('username', None)
+    response = {
+        'is_taken': User.objects.filter(username__iexact=username).exists()
+    }
+    return JsonResponse(response)
 
 
 class SubscriptionsAPIListPagination(PageNumberPagination):
@@ -70,7 +147,6 @@ class SubscriptionsAPIUpdate(generics.RetrieveUpdateAPIView):
     queryset = Subscriptions.objects.all()
     serializer_class = SubscriptionsSerializer
     permission_classes = (IsAuthenticated,)
-    # permission_classes = (IsOwnerOrReadOnly,)
 
 
 class SubscriptionsAPIDestroy(generics.RetrieveDestroyAPIView):

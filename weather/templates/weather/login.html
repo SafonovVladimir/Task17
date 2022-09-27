@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Login :: {{ block.super }}
+{% endblock %}
+
+
+{% block content %}
+    <h1>Login</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary btn-block">Login</button>
+    </form>
+{#    <div class="inline-group">#}
+{#        <br><a href="{% url "social:begin" "google-oauth2" %}" class="btn btn-block btn-social btn-google">#}
+{#        <span class="fa fa-google"></span>Sign in with Google#}
+{#    </a>#}
+{#        <a href="{% url "social:begin" "github" %}" class="btn btn-block btn-social btn-github">#}
+{#            <span class="fa fa-github"></span>Sign in with GitHub#}
+{#        </a>#}
+{#        <a href="{% url "social:begin" "facebook" %}" class="btn btn-social btn-facebook btn-block">#}
+{#            <span class="fa fa-facebook"></span>Sign in with Facebook#}
+{#        </a>#}
+{#    </div>#}
+    {% block javascript %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                $('#id_username').keyup(function () {
+                    $.ajax({
+                        data: $(this).serialize(),
+                        url: "{% url 'check_username' %}",
+                        success: function (response) {
+                            if (response.is_taken == true) {
+                                $('#id_username').removeClass('is-invalid').addClass('is-valid');
+                            } else {
+                                $('#id_username').removeClass('is-valid').addClass('is-invalid');
+                                $('#usernameError').remove();
+
+                            }
+                        },
+                        error: function (response) {
+                            console.log(response.responseJSON.errors)
+                        }
+                    });
+                    return false;
+                });
+            })
+        </script>
+    {% endblock javascript %}
+
+{% endblock %}
