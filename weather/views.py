@@ -54,27 +54,14 @@ def view_city_forecast(request):
 
 
 def get_user_subscriptions(request, username):
-    # user = request.user
     user_id = User.objects.get(username=username).id
     subscriptions = Subscriptions.objects.filter(user=user_id).order_by('created_at')
     intervals = Subscriptions.INTERVAL_CHOICES
 
-    # if request.method == 'POST':
-    #     form = AddSubscriptionForm(request.POST)
-    # interval = request.POST['interval']
-
     context = {
         "subscriptions": subscriptions,
         "intervals": intervals,
-            # "user_id": user_id,
-            # "cities": cities,
     }
-    # else:
-    #     context = {
-    #         "subscriptions": subscriptions,
-    #         "intervals": intervals,
-    #     }
-
     return render(request, "weather/index.html", context=context)
 
 
