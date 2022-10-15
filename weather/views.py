@@ -1,3 +1,4 @@
+import json
 import urllib.request
 
 from django.contrib import messages
@@ -5,16 +6,15 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
-import json
-
+from django.views.generic import CreateView
 from rest_framework import generics
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 
+from .forms import UserLoginForm, UserRegisterForm
 from .models import City, Subscriptions, Forecast
 from .permissions import IsAdminOrReadOnly
 from .serializers import SubscriptionsSerializer, CitySerializer, ForecastSerializer
-from .forms import UserLoginForm, UserRegisterForm
 
 API_KEY = '601e4e6a7e92e77aa8f999a053b5510f'
 
@@ -26,37 +26,54 @@ def index(request):
         return redirect('login')
 
 
-def get_user_subscriptions(request, username):
-    user_id = User.objects.get(username=username).id
-    subscriptions = Subscriptions.objects.filter(user=user_id).order_by('created_at')
+def add_subscription(request):
+    return render(request, "weather/add_subscription.html")
 
+
+def view_city_forecast(request):
     if request.method == 'POST':
         city = request.POST['city']
-
         source = urllib.request.urlopen(
             f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric').read()
-
         list_of_data = json.loads(source)
-
-        # data for variable list_of_data
         context = {
-            # "country_code": str(list_of_data['sys']['country']),
-            # "longitude": str(list_of_data['coord']['lon']),
-            # "latidude": str(list_of_data['coord']['lat']),
-            # "timezone": str(list_of_data['timezone'] // 3600),
+            "country_code": str(list_of_data['sys']['country']),
+            "longitude": str(list_of_data['coord']['lon']),
+            "latidude": str(list_of_data['coord']['lat']),
+            "timezone": str(list_of_data['timezone'] // 3600),
             "temp": str(list_of_data['main']['temp']) + 'C',
             "pressure": str(list_of_data['main']['pressure']),
             "humidity": str(list_of_data['main']['humidity']),
-            # "code": str(list_of_data['cod']),
-            # "list_of_data": list_of_data,
-            "subscriptions": subscriptions,
-            # "user_id": user_id,
-            # "cities": cities,
+            "code": str(list_of_data['cod']),
+            "list_of_data": list_of_data,
         }
     else:
         context = {
-            "subscriptions": subscriptions,
         }
+    return render(request, "weather/view_forecast.html", context=context)
+
+
+def get_user_subscriptions(request, username):
+    # user = request.user
+    user_id = User.objects.get(username=username).id
+    subscriptions = Subscriptions.objects.filter(user=user_id).order_by('created_at')
+    intervals = Subscriptions.INTERVAL_CHOICES
+
+    # if request.method == 'POST':
+    #     form = AddSubscriptionForm(request.POST)
+    # interval = request.POST['interval']
+
+    context = {
+        "subscriptions": subscriptions,
+        "intervals": intervals,
+            # "user_id": user_id,
+            # "cities": cities,
+    }
+    # else:
+    #     context = {
+    #         "subscriptions": subscriptions,
+    #         "intervals": intervals,
+    #     }
 
     return render(request, "weather/index.html", context=context)
 
@@ -191,3 +208,7 @@ class ForecastAPIDestroy(generics.RetrieveDestroyAPIView):
     queryset = Forecast.objects.all()
     serializer_class = ForecastSerializer
     permission_classes = (IsAdminOrReadOnly,)
+
+
+class SubscriptionsView(CreateView):
+    model = Subscriptions

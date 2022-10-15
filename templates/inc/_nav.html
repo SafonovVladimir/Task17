@@ -1,17 +1,23 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="{% url 'home' %}">Weather Reminder</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-            </li>
-        </ul>
+    <div class="collapse navbar-collapse" id="navbarText">
+        {% if request.user.is_authenticated %}
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'add_subscription' %}">Add subscription</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'view_city_forecast' %}">View city forecast</a>
+                </li>
+            </ul>
+        {% endif %}
         <span class="navbar-text">
             {% if request.user.is_authenticated %}
-                Welcome, {{ request.user.username }} |
+                &emsp;&emsp;&emsp; Welcome, {{ request.user.username }} |
                 <a href="{% url 'logout' %}">Logout</a>
             {% else %}
                 <a href="{% url 'register' %}">Register</a> | <a href="{% url 'login' %}">Login</a>

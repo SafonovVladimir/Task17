@@ -7,11 +7,15 @@
 {% load static %}
 
 {% block content %}
+    {#    <nav class="row" style="background: green; color: white;">#}
+    {#        <h1 class="col-md-3 text-center">Weather</h1>#}
+    {#    </nav>#}
     <br/>
+    <br/>
+    <br>
     <div>
         <br>
-        <h1 align="center">Current subscriptions</h1>
-    <br/>
+        <h1 align="center">Subscriptions</h1>
         {% for sub in subscriptions %}
             {% for i in sub.subscriptions.all %}
                 <b>City:</b> {{ i }}

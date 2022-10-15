@@ -1,22 +1,23 @@
-from django.db import models
 from django.contrib.auth.models import User
-
-INTERVAL_CHOICES = (
-    ('1H', '1H'),
-    ('3H', '3H'),
-    ('6H', '6H'),
-    ('12H', '12H'),
-    ('24H', '24H'),
-)
+from django.db import models
 
 
 class Subscriptions(models.Model):
+    INTERVAL_CHOICES = (
+        ('1H', '1H'),
+        ('3H', '3H'),
+        ('6H', '6H'),
+        ('12H', '12H'),
+        ('24H', '24H'),
+    )
     user = models.ForeignKey(User, verbose_name="User", on_delete=models.CASCADE)
     interval = models.CharField("Interval", choices=INTERVAL_CHOICES, max_length=3, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Create')
 
     def __str__(self):
-        return str(self.pk)
+        # return str(self.pk)
+        return self.user.get_username() + '_' + self.interval
+
 
     class Meta:
         verbose_name = "Subscription"
@@ -26,7 +27,6 @@ class Subscriptions(models.Model):
 
 class City(models.Model):
     subscriptions = models.ManyToManyField(Subscriptions, blank=True, related_name='subscriptions')
-    # subscription = models.ForeignKey(Subscriptions, verbose_name="Subscription", on_delete=models.CASCADE)
     city_name = models.CharField("City name", blank=True, max_length=150)
     timezone = models.CharField("Timezone", blank=True, max_length=10)
     longitude = models.CharField("Longitude", blank=True, max_length=12)

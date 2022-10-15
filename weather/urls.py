@@ -23,4 +23,7 @@ urlpatterns = [
     path('api/v1/forecast/', ForecastAPIList.as_view()),
     path('api/v1/forecast/<int:pk>/', ForecastAPIUpdate.as_view()),
     path('api/v1/forecastdelete/<int:pk>/', ForecastAPIDestroy.as_view()),
+
+    path('add_subscription/', add_subscription, name='add_subscription'),
+    path('view_city_forecast/', view_city_forecast, name='view_city_forecast'),
 ]
