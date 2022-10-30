@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 
-from .models import Subscriptions
+from .models import Subscriptions, City
 
 
 class UserLoginForm(AuthenticationForm):
@@ -22,9 +22,22 @@ class UserRegisterForm(UserCreationForm):
         fields = ('username', 'email', 'password1', 'password2')
 
 class AddSubscriptionForm(forms.ModelForm):
+
     class Meta:
         model = Subscriptions
-        fields = ['user', 'interval']
+        fields = ['interval']
+
+class AddCityForm(forms.ModelForm):
+
+    class Meta:
+        model = City
+        fields = ['city_name']
+
+        city_name = forms.CharField()
+        # subscriptions = forms.ModelMultipleChoiceField(
+        #     queryset=Subscriptions.objects.all(),
+        #     widget=forms.CheckboxSelectMultiple
+        # )
 
 
 

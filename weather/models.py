@@ -28,9 +28,9 @@ class Subscriptions(models.Model):
 class City(models.Model):
     subscriptions = models.ManyToManyField(Subscriptions, blank=True, related_name='subscriptions')
     city_name = models.CharField("City name", blank=True, max_length=150)
-    timezone = models.CharField("Timezone", blank=True, max_length=10)
-    longitude = models.CharField("Longitude", blank=True, max_length=12)
-    latitude = models.CharField("Latitude", blank=True, max_length=12)
+    timezone = models.CharField("Timezone", blank=False, max_length=10)
+    longitude = models.CharField("Longitude", blank=False, max_length=12)
+    latitude = models.CharField("Latitude", blank=False, max_length=12)
 
     def __str__(self):
         return self.city_name

@@ -11,7 +11,7 @@ from rest_framework import generics
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 
-from .forms import UserLoginForm, UserRegisterForm
+from .forms import UserLoginForm, UserRegisterForm, AddSubscriptionForm, AddCityForm
 from .models import City, Subscriptions, Forecast
 from .permissions import IsAdminOrReadOnly
 from .serializers import SubscriptionsSerializer, CitySerializer, ForecastSerializer
@@ -27,7 +27,41 @@ def index(request):
 
 
 def add_subscription(request):
-    return render(request, "weather/add_subscription.html")
+    if request.user.is_authenticated():
+        user = request.user
+    else:
+        return redirect("login")
+    if request.method == 'POST':
+        form = AddSubscriptionForm(request.POST)
+        city = AddCityForm(request.POST)
+        context = {
+            'form': form,
+            'city': city
+        }
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.user = user
+            # interval = request.GET.get('interval')
+            # i, created = Subscriptions.objects.get_or_create(user=user, interval=interval)
+            # p, created = City.objects.get_or_create()
+            # p.save()
+            # City.objects.create(subscriptions=instance, city_name=city)
+            # instance.subscriptions.add()
+            instance.save()
+            # inst_pk = instance.pk
+            # subs = Subscriptions.objects.get(pk=1)
+            # City.objects.create(subscriptions.set(subs), city_name=city)
+            return redirect('user_subscriptions', user)
+        else:
+            messages.error(request, 'Error')
+    else:
+        form = AddSubscriptionForm()
+        city = AddCityForm()
+        context = {
+            'form': form,
+            'city': city
+        }
+    return render(request, "weather/add_subscription.html", context=context)
 
 
 def view_city_forecast(request):
@@ -45,7 +79,7 @@ def view_city_forecast(request):
             "pressure": str(list_of_data['main']['pressure']),
             "humidity": str(list_of_data['main']['humidity']),
             "code": str(list_of_data['cod']),
-            "list_of_data": list_of_data,
+            # "list_of_data": list_of_data,
         }
     else:
         context = {
@@ -56,11 +90,11 @@ def view_city_forecast(request):
 def get_user_subscriptions(request, username):
     user_id = User.objects.get(username=username).id
     subscriptions = Subscriptions.objects.filter(user=user_id).order_by('created_at')
-    intervals = Subscriptions.INTERVAL_CHOICES
+    # intervals = Subscriptions.INTERVAL_CHOICES
 
     context = {
         "subscriptions": subscriptions,
-        "intervals": intervals,
+        # "intervals": intervals,
     }
     return render(request, "weather/index.html", context=context)
 

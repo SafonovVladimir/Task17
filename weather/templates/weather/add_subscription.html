@@ -15,15 +15,24 @@
     <br>
     <div>
         <br>
-        <h1 align="center">Subscriptions</h1>
-        {% for sub in subscriptions %}
-            {% for i in sub.subscriptions.all %}
-                <b>City:</b> {{ i }}
-                <b>Interval:</b> {{ sub.interval }}
-                <b>Created at:</b> {{ sub.created_at }}
-                <br>
-            {% endfor %}
-        {% endfor %}
+        <h1 align="center">Add subscription:</h1>
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ city.as_p }}
+            {{ form.as_p }}
+            <br>
+            <button type="submit" class="btn btn-success m-3">Save</button>
+        </form>
+{#            {{ form }}#}
+{#        {% for sub in subscriptions %}#}
+{#            {{ sub }}#}
+            {#            {% for i in sub.subscriptions.all %}#}
+            {#                <b>City:</b> {{ i }}#}
+            {#                <b>Interval:</b> {{ sub.interval }}#}
+            {#                <b>Created at:</b> {{ sub.created_at }}#}
+            {#                <br>#}
+            {#            {% endfor %}#}
+{#        {% endfor %}#}
     </div>
 {% endblock %}
 
