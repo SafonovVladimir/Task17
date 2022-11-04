@@ -7,19 +7,16 @@
 {% load static %}
 
 {% block content %}
-    {#    <nav class="row" style="background: green; color: white;">#}
-    {#        <h1 class="col-md-3 text-center">Weather</h1>#}
-    {#    </nav>#}
     <br/>
     <br/>
     <br>
     <div>
         <br>
-        <h1 align="center">Add subscription:</h1>
+        <h1 align="center">Add interval:</h1>
         <form action="" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            {{ city.as_p }}
-            <button type="submit" class="btn btn-success m-3">Save</button>
+            {{ subscribe.as_p }}
+            <button type="submit" class="btn btn-success m-3">Add interval</button>
         </form>
     </div>
 {% endblock %}

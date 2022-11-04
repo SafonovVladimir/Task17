@@ -31,9 +31,9 @@ class AddCityForm(forms.ModelForm):
 
     class Meta:
         model = City
-        fields = ['city_name']
+        fields = ['city_name', 'subscriptions']
 
-        city_name = forms.CharField()
+        # city_name = forms.CharField()
         # subscriptions = forms.ModelMultipleChoiceField(
         #     queryset=Subscriptions.objects.all(),
         #     widget=forms.CheckboxSelectMultiple

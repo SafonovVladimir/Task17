@@ -14,7 +14,7 @@ class SubscriptionsAdmin(admin.ModelAdmin):
 
 
 class CityAdmin(admin.ModelAdmin):
-    list_display = ('id', 'city_name', 'timezone', 'longitude', 'latitude')
+    list_display = ('id', 'city_name')#, 'timezone', 'longitude', 'latitude')
     list_display_links = ('id', 'city_name')
     filter_horizontal = ['subscriptions']
     search_fields = ('city_name',)

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'weather.apps.WeatherConfig',
     'rest_framework',
     'rest_framework.authtoken',
+    'django_celery_results',
 ]
 
 MIDDLEWARE = [
@@ -193,3 +194,28 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
+
+# CELERY_RESULT_BACKEND = 'django-db'
+# Celery base setup
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = TIME_ZONE
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379/1',
+    }
+}
+# celery setting
+CELERY_CACHE_BACKEND = 'default'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'vladysaf@gmail.com'
+EMAIL_HOST_PASSWORD = 'ydvgijczosjryeub'
+EMAIL_USE_TLS = True

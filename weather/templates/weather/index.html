@@ -11,12 +11,17 @@
     <div>
         <br>
         <h1 align="center">Current subscriptions</h1>
-    <br/>
+        <br/>
         {% for sub in subscriptions %}
             {% for i in sub.subscriptions.all %}
                 <b>City:</b> {{ i }}
                 <b>Interval:</b> {{ sub.interval }}
                 <b>Created at:</b> {{ sub.created_at }}
+{#                <form action="{% url 'home' i.pk %}" method="post">#}
+{#                    {% csrf_token %}#}
+{#                    <input type="submit" value="Delete">#}
+{#                </form>#}
+                <button type="submit" class="btn btn-success m-3" id="{{ i.pk }}">Delete</button>
                 <br>
             {% endfor %}
         {% endfor %}

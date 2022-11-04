@@ -26,39 +26,43 @@ def index(request):
         return redirect('login')
 
 
-def add_subscription(request):
-    if request.user.is_authenticated():
-        user = request.user
-    else:
-        return redirect("login")
+def add_interval(request):
+    user = request.user
     if request.method == 'POST':
-        form = AddSubscriptionForm(request.POST)
+        subscribe = AddSubscriptionForm(request.POST)
+        context = {
+            'subscribe': subscribe,
+        }
+        if subscribe.is_valid():
+            instance = subscribe.save(commit=False)
+            instance.user = user
+            instance.save()
+            return redirect('add_subscription')
+        else:
+            messages.error(request, 'Error')
+    else:
+        subscribe = AddSubscriptionForm()
+        context = {
+            'subscribe': subscribe,
+        }
+    return render(request, "weather/add_interval.html", context=context)
+
+
+def add_subscription(request):
+    user = request.user
+    if request.method == 'POST':
         city = AddCityForm(request.POST)
         context = {
-            'form': form,
             'city': city
         }
-        if form.is_valid():
-            instance = form.save(commit=False)
-            instance.user = user
-            # interval = request.GET.get('interval')
-            # i, created = Subscriptions.objects.get_or_create(user=user, interval=interval)
-            # p, created = City.objects.get_or_create()
-            # p.save()
-            # City.objects.create(subscriptions=instance, city_name=city)
-            # instance.subscriptions.add()
-            instance.save()
-            # inst_pk = instance.pk
-            # subs = Subscriptions.objects.get(pk=1)
-            # City.objects.create(subscriptions.set(subs), city_name=city)
+        if city.is_valid():
+            city.save()
             return redirect('user_subscriptions', user)
         else:
             messages.error(request, 'Error')
     else:
-        form = AddSubscriptionForm()
         city = AddCityForm()
         context = {
-            'form': form,
             'city': city
         }
     return render(request, "weather/add_subscription.html", context=context)
