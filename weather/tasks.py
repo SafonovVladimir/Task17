@@ -17,18 +17,17 @@ def send_email(interval):
                 source = urllib.request.urlopen(
                     f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric').read()
                 list_of_data = json.loads(source)
-                context = {
-                    "country_code": str(list_of_data['sys']['country']),
-                    "longitude": str(list_of_data['coord']['lon']),
-                    "latidude": str(list_of_data['coord']['lat']),
-                    "timezone": str(list_of_data['timezone'] // 3600),
-                    "temp": str(list_of_data['main']['temp']) + 'C',
-                    "pressure": str(list_of_data['main']['pressure']),
-                    "humidity": str(list_of_data['main']['humidity']),
-                }
+                context = f"<h3>country_code: {str(list_of_data['sys']['country'])}</h3>" \
+                          f"<p>longitude: {str(list_of_data['coord']['lon'])}</p>" \
+                          f"<p>latidude: {str(list_of_data['coord']['lat'])}</p>" \
+                          f"<p>timezone: {str(list_of_data['timezone'] // 3600)}</p>" \
+                          f"<p>temperature: {str(list_of_data['main']['temp']) + 'C'}</p>" \
+                          f"<p>pressure: {str(list_of_data['main']['pressure'])}</p>" \
+                          f"<p>humidity: {str(list_of_data['main']['humidity'])}</p>"
                 send_mail(f'Forecast in {city}!',
-                          f'The weather in {city}: \n{context}',
+                          f'The weather in {city}:',
                           'Weather Reminder Service',
                           [sub.user.email],
+                          html_message=context,
                           fail_silently=False
                           )
