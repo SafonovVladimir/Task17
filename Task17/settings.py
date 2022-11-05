@@ -199,9 +199,9 @@ SIMPLE_JWT = {
 # CELERY_RESULT_BACKEND = 'django-db'
 # Celery base setup
 # CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
-CELERY_BROKER_URL = 'redis://redis-10666.c243.eu-west-1-3.ec2.cloud.redislabs.com:10666'
+CELERY_BROKER_URL = 'redis://default:sMsTSMOUN924nMUViKxFhEmsoSZWO8fx@redis-10666.c243.eu-west-1-3.ec2.cloud.redislabs.com:10666'
 # CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379'
-CELERY_RESULT_BACKEND = 'redis://redis-10666.c243.eu-west-1-3.ec2.cloud.redislabs.com:10666'
+CELERY_RESULT_BACKEND = 'redis://default:sMsTSMOUN924nMUViKxFhEmsoSZWO8fx@redis-10666.c243.eu-west-1-3.ec2.cloud.redislabs.com:10666'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -210,7 +210,7 @@ CELERY_TIMEZONE = TIME_ZONE
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-        'LOCATION': 'redis://redis-10666.c243.eu-west-1-3.ec2.cloud.redislabs.com:10666/1',
+        'LOCATION': 'redis://default:sMsTSMOUN924nMUViKxFhEmsoSZWO8fx@redis-10666.c243.eu-west-1-3.ec2.cloud.redislabs.com:10666/1',
     }
 }
 # celery setting
