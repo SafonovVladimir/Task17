@@ -10,12 +10,10 @@ from weather.models import City
 
 @shared_task
 def send_email(interval):
-    # users_email = []
     cities = City.objects.all()
     for city in cities:
         for sub in city.subscriptions.all():
             if sub.interval == interval:
-                # users_email.append(sub.user.email)
                 source = urllib.request.urlopen(
                     f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric').read()
                 list_of_data = json.loads(source)
@@ -34,12 +32,3 @@ def send_email(interval):
                           [sub.user.email],
                           fail_silently=False
                           )
-
-# @shared_task
-# def send_email(email):
-#     send_mail('Forecast in city!',
-#               'The weater in city ___ is ___!',
-#               'NOTIFICATION_EMAIL',
-#               [email],
-#               fail_silently=False
-#               )
