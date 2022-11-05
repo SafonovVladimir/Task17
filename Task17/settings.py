@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-iz&v!3*82x*hrb66e-g+vj@k=!^pyepr=(xxhl))v-@5o-3ra1'
-
+API_KEY = '601e4e6a7e92e77aa8f999a053b5510f'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'django_celery_results',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [

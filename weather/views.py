@@ -11,12 +11,11 @@ from rest_framework import generics
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 
+from Task17.settings import API_KEY
 from .forms import UserLoginForm, UserRegisterForm, AddSubscriptionForm, AddCityForm
 from .models import City, Subscriptions, Forecast
 from .permissions import IsAdminOrReadOnly
 from .serializers import SubscriptionsSerializer, CitySerializer, ForecastSerializer
-
-API_KEY = '601e4e6a7e92e77aa8f999a053b5510f'
 
 
 def index(request):
@@ -50,6 +49,7 @@ def add_interval(request):
 
 def add_subscription(request):
     user = request.user
+    user_id = User.objects.get(username=user.username).id
     if request.method == 'POST':
         city = AddCityForm(request.POST)
         context = {
@@ -83,7 +83,6 @@ def view_city_forecast(request):
             "pressure": str(list_of_data['main']['pressure']),
             "humidity": str(list_of_data['main']['humidity']),
             "code": str(list_of_data['cod']),
-            # "list_of_data": list_of_data,
         }
     else:
         context = {
