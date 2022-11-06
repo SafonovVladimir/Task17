@@ -12,6 +12,7 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 app.conf.beat_schedule = {
     'every-1-hour': {
         'task': 'weather.tasks.send_email',
+        # "schedule": crontab(minute='*/2'),
         "schedule": crontab(minute='0', hour='*/1'),
         'args': ('1H',)
     },
