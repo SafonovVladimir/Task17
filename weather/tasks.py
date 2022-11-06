@@ -17,7 +17,8 @@ def send_email(interval):
                 source = urllib.request.urlopen(
                     f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric').read()
                 list_of_data = json.loads(source)
-                context = f"<h3>country_code: {str(list_of_data['sys']['country'])}</h3>" \
+                context = f"Thanks to our service, you get a weather forecast in the city {city} once every {interval} hours." \
+                          f"<h3>country_code: {str(list_of_data['sys']['country'])}</h3>" \
                           f"<p>longitude: {str(list_of_data['coord']['lon'])}</p>" \
                           f"<p>latidude: {str(list_of_data['coord']['lat'])}</p>" \
                           f"<p>timezone: {str(list_of_data['timezone'] // 3600)}</p>" \
