@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import CreateView
 from rest_framework import generics
 from rest_framework.pagination import PageNumberPagination
@@ -51,19 +51,30 @@ def add_subscription(request):
     user = request.user
     user_id = User.objects.get(username=user.username).id
     if request.method == 'POST':
+        intervals = AddSubscriptionForm(request.POST)
         city = AddCityForm(request.POST)
         context = {
-            'city': city
+            'city': city,
+            'intervals': intervals,
         }
         if city.is_valid():
-            city.save()
+            instance_interval = intervals.save(commit=False)
+            instance_interval.user = user
+            instance_interval.save()
+            # intervals.save()
+            instance_city = city.save(commit=False)
+            instance_city.save()
+            instance_city.subscriptions.add(instance_interval)
+            # instance_interval.save()
             return redirect('user_subscriptions', user)
         else:
             messages.error(request, 'Error')
     else:
         city = AddCityForm()
+        intervals = AddSubscriptionForm()
         context = {
-            'city': city
+            'city': city,
+            'intervals': intervals,
         }
     return render(request, "weather/add_subscription.html", context=context)
 
@@ -101,6 +112,13 @@ def get_user_subscriptions(request, username):
     }
     return render(request, "weather/index.html", context=context)
 
+def delete_subscription(request, id):
+    city = get_object_or_404(City, pk=id)
+    if request.method == 'POST':         # If method is POST,
+        city.delete()
+        return redirect('home')             # Finally, redirect to the index page.
+
+    return render(request, 'weather/index.html', {'city': city})
 
 def user_login(request):
     if request.method == 'POST':

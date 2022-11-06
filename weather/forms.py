@@ -31,7 +31,7 @@ class AddCityForm(forms.ModelForm):
 
     class Meta:
         model = City
-        fields = ['city_name', 'subscriptions']
+        fields = ['city_name']
 
         # city_name = forms.CharField()
         # subscriptions = forms.ModelMultipleChoiceField(

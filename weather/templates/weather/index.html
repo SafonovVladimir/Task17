@@ -17,11 +17,17 @@
                 <b>City:</b> {{ i }}
                 <b>Interval:</b> {{ sub.interval }}
                 <b>Created at:</b> {{ sub.created_at }}
-{#                <form action="{% url 'home' i.pk %}" method="post">#}
-{#                    {% csrf_token %}#}
-{#                    <input type="submit" value="Delete">#}
-{#                </form>#}
-                <button type="submit" class="btn btn-success m-3" id="{{ i.pk }}">Delete</button>
+                {#                <form action="{% url 'home' i.pk %}" method="post">#}
+                {#                    {% csrf_token %}#}
+                {#                    <input type="submit" value="Delete">#}
+                {#                </form>#}
+                <form action="{% url 'delete_subscription' i.pk%}" method="post">
+                    {% csrf_token %}
+{#                    <input type="submit" value="Delete subs">#}
+                    <button type="submit" onclick="return confirm('Are you sure you want to delete?')"
+                            class="btn btn-success m-3" id="{{ i.pk }}">Delete
+                    </button>
+                </form>
                 <br>
             {% endfor %}
         {% endfor %}

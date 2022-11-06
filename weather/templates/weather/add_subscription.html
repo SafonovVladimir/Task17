@@ -19,6 +19,7 @@
         <form action="" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {{ city.as_p }}
+            {{ intervals.as_p }}
             <button type="submit" class="btn btn-success m-3">Save</button>
         </form>
     </div>

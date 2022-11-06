@@ -27,4 +27,5 @@ urlpatterns = [
     path('add_interval/', add_interval, name='add_interval'),
     path('add_subscription/', add_subscription, name='add_subscription'),
     path('view_city_forecast/', view_city_forecast, name='view_city_forecast'),
+    path('delete_subscription/<int:id>', delete_subscription, name='delete_subscription'),
 ]
