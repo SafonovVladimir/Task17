@@ -35,9 +35,9 @@ def send_email(interval):
                 sunrise = datetime.datetime.fromtimestamp(list_of_data['sys']['sunrise']).strftime('%H:%M:%S')
                 sunset = datetime.datetime.fromtimestamp(list_of_data['sys']['sunset']).strftime('%H:%M:%S')
 
-                context = f"Thanks to our service, you get a weather forecast in the city {city} once every {interval} hours." \
-                          f"<h3>country_code: {country_code}</h3>" \
-                          f"<p>timezone: {timezone}</p>" \
+                context = f"Thanks to our service, you get a weather forecast in the city {city} once every {interval}." \
+                          f"<h3>City name: {city}</h3>" \
+                          f"<p>country code: {country_code}, timezone: {timezone}</p>" \
                           f"<p>longitude: {longitude}, latidude: {latidude}</p>" \
                           f"<br>" \
                           f"<p>weather: {weather}</p>" \
