@@ -24,7 +24,9 @@ def send_email(interval):
                           f"<p>timezone: {str(list_of_data['timezone'] // 3600)}</p>" \
                           f"<p>temperature: {str(list_of_data['main']['temp']) + 'C'}</p>" \
                           f"<p>pressure: {str(list_of_data['main']['pressure'])}</p>" \
-                          f"<p>humidity: {str(list_of_data['main']['humidity'])}</p>"
+                          f"<p>humidity: {str(list_of_data['main']['humidity'])}</p>" \
+                          f"\n" \
+                          f"Subscription management "
                 send_mail(f'Forecast in {city}!',
                           f'The weather in {city}:',
                           'Weather Reminder Service',
