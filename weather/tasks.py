@@ -37,25 +37,16 @@ def send_email(interval):
 
                 context = f"Thanks to our service, you get a weather forecast in the city {city} once every {interval} hours." \
                           f"<h3>country_code: {country_code}</h3>" \
-                          f"<p>longitude: {longitude}</p>" \
-                          f"<p>latidude: {latidude}</p>" \
                           f"<p>timezone: {timezone}</p>" \
-                          f"\n" \
+                          f"<p>longitude: {longitude}, latidude: {latidude}</p>" \
+                          f"<br>" \
                           f"<p>weather: {weather}</p>" \
-                          f"<p>temperature: {temperature + 'C'}</p>" \
-                          f"<p>temperature min: {temp_min + 'C'}</p>" \
-                          f"<p>temperature max: {temp_max + 'C'}</p>" \
+                          f"<p>temperature: {temperature + 'C'}, temperature min: {temp_min + 'C'}, temperature max: {temp_max + 'C'}</p>" \
                           f"<p>feels_like: {feels_like}</p>" \
-                          f"\n" \
-                          f"<p>pressure: {pressure}</p>" \
-                          f"<p>humidity: {humidity}</p>" \
-                          f"<p>visibility: {visibility}</p>" \
-                          f"<p>wind speed: {wind_speed}</p>" \
-                          f"<p>clouds: {clouds}</p>" \
-                          f"\n" \
-                          f"<p>sunrise: {sunrise}</p>" \
-                          f"<p>sunset: {sunset}</p>" \
-                          f"Subscription management "
+                          f"<br>" \
+                          f"<p>pressure: {pressure}, humidity: {humidity}, visibility: {visibility}</p>" \
+                          f"<p>wind speed: {wind_speed}, clouds: {clouds}</p>" \
+                          f"<p>sunrise: {sunrise}, sunset: {sunset}</p>"
                 f, created = Forecast.objects.get_or_create(
                     city=city,
                     weather=weather,
